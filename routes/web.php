@@ -116,3 +116,6 @@ Route::prefix('user')->middleware('role:user')->group(function () {
     })->name('user.dashboard');
     // Другие маршруты для обычных пользователей
 });
+if (app()->environment('production')) {
+    URL::forceScheme('https');
+}
