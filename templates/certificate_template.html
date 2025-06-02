@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шаблон сертификата</title>
+    <style>
+        /* Основные стили сертификата */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-container {
+            width: 100%;
+            max-width: 210mm; /* A4 ширина максимальная, но адаптивная */
+            height: auto;
+            min-height: 100vh;
+            margin: 0 auto;
+            background-color: #fff;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            box-sizing: border-box;
+            padding: 5%;
+            border: clamp(5px, 5vw, 25px) solid transparent;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-image: 
+                linear-gradient(#fff, #fff), 
+                repeating-linear-gradient(45deg, #ccc 0, #ccc 0.5px, transparent 0, transparent 2px);
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+        }
+        
+        .certificate-content {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .certificate-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 7vw, 42px);
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin-bottom: clamp(5px, 2vw, 10px);
+            letter-spacing: 2px;
+        }
+        
+        .certificate-subtitle {
+            font-size: clamp(16px, 4vw, 24px);
+            font-weight: 300;
+            margin-bottom: clamp(20px, 5vw, 40px);
+            color: #555;
+        }
+        
+        .logo-area {
+            margin-bottom: clamp(15px, 4vw, 30px);
+        }
+        
+        .logo-img {
+            max-width: clamp(80px, 20vw, 150px);
+            max-height: clamp(80px, 20vw, 150px);
+        }
+        
+        .recipient-label {
+            font-size: clamp(12px, 3vw, 16px);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .recipient-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(18px, 5vw, 32px);
+            font-weight: 500;
+            margin: clamp(5px, 2vw, 10px) 0 clamp(12px, 3vw, 25px);
+            color: #1a1a1a;
+            padding: clamp(3px, 1vw, 5px) clamp(10px, 3vw, 20px);
+            display: inline-block;
+            border-bottom: 1px solid #ddd;
+            word-break: break-word;
+        }
+        
+        .certificate-text {
+            font-size: clamp(14px, 3vw, 18px);
+            line-height: 1.6;
+            margin: clamp(10px, 3vw, 20px) 0 clamp(15px, 4vw, 30px);
+            max-width: 90%;
+            padding: 0 10px;
+        }
+        
+        .certificate-footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: clamp(30px, 8vw, 60px);
+            flex-wrap: wrap;
+        }
+        
+        .date-section, .signature-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            min-width: 120px;
+            margin: 10px auto;
+        }
+        
+        .certificate-date {
+            padding: 5px 0;
+            margin-top: 5px;
+            border-top: 1px solid #ddd;
+            font-size: clamp(12px, 3vw, 16px);
+        }
+        
+        .signature-line {
+            width: clamp(100px, 25vw, 200px);
+            border-top: 1px solid #333;
+            margin-top: clamp(20px, 6vw, 50px);
+        }
+        
+        .signature-name {
+            margin-top: 5px;
+            font-size: clamp(10px, 2.5vw, 14px);
+        }
+        
+        .certificate-stamp {
+            position: absolute;
+            right: clamp(20px, 5vw, 80px);
+            bottom: clamp(50px, 10vw, 100px);
+            width: clamp(60px, 15vw, 120px);
+            height: clamp(60px, 15vw, 120px);
+            opacity: 0.3;
+        }
+        
+        .corner-decoration {
+            position: absolute;
+            width: clamp(30px, 8vw, 100px);
+            height: clamp(30px, 8vw, 100px);
+            border: 2px solid #ddd;
+            border-radius: 0;
+        }
+        
+        .top-left {
+            top: clamp(10px, 2vw, 20px);
+            left: clamp(10px, 2vw, 20px);
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .top-right {
+            top: clamp(10px, 2vw, 20px);
+            right: clamp(10px, 2vw, 20px);
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .bottom-left {
+            bottom: clamp(10px, 2vw, 20px);
+            left: clamp(10px, 2vw, 20px);
+            border-right: none;
+            border-top: none;
+        }
+        
+        .bottom-right {
+            bottom: clamp(10px, 2vw, 20px);
+            right: clamp(10px, 2vw, 20px);
+            border-left: none;
+            border-top: none;
+        }
+        
+        /* Медиа запросы для дополнительной адаптивности */
+        @media screen and (max-width: 480px) {
+            .certificate-container {
+                padding: 20px 10px;
+                border-width: 8px;
+            }
+            
+            .certificate-footer {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .date-section, .signature-section {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+            
+            .certificate-stamp {
+                right: 10px;
+                bottom: 30px;
+            }
+        }
+        
+        /* Стили для печати */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .certificate-container {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                height: 100%;
+                page-break-after: always;
+            }
+        }
+        
+        /* Исправления для iPhone и других мобильных устройств */
+        @supports (-webkit-touch-callout: none) {
+            .certificate-container {
+                min-height: -webkit-fill-available;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <!-- Декоративные углы -->
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration top-right"></div>
+        <div class="corner-decoration bottom-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        
+        <div class="certificate-content">
+            <!-- Логотип вверху -->
+            <div class="logo-area">
+                <img class="logo-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MCwgNDApIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI2MCIgZmlsbD0iI2YxZjFmMSIgc3Ryb2tlPSIjZGRkIiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI2MCIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzU1NSI+TE9HTzwvdGV4dD48L2c+PC9zdmc+" alt="Логотип" data-editable="company_logo">
+            </div>
+            
+            <!-- Заголовки -->
+            <h1 class="certificate-title" data-editable="certificate_title">СЕРТИФИКАТ</h1>
+            <div class="certificate-subtitle" data-editable="certificate_subtitle">о достижении</div>
+            
+            <!-- Получатель -->
+            <div class="recipient-label" data-editable="recipient_label">Настоящий сертификат выдан</div>
+            <div class="recipient-name" data-editable="recipient_name">Иванову Ивану Ивановичу</div>
+            
+            <!-- Текст сертификата -->
+            <div class="certificate-text" data-editable="certificate_text">
+                за успешное прохождение курса обучения и демонстрацию профессиональных навыков в области веб-разработки. 
+                Обладатель данного сертификата показал отличные результаты и заслуживает признания.
+            </div>
+            
+            <!-- Подвал сертификата с датой и подписью -->
+            <div class="certificate-footer">
+                <div class="date-section">
+                    <span data-editable="date_label">Дата выдачи:</span>
+                    <span class="certificate-date" data-editable="certificate_date">15 января 2023 г.</span>
+                </div>
+                
+                <div class="signature-section">
+                    <div class="signature-line"></div>
+                    <div class="signature-name" data-editable="signature_name">Петров П.П., Директор</div>
+                </div>
+            </div>
+            
+            <!-- Печать (опционально) -->
+            <img class="certificate-stamp" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1zbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI0NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSI2MCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+0J7QpNCY0KbQmNCQ0JvQrNCd0JDQrzwvdGV4dD48dGV4dCB4PSI2MCIgeT0iNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+0J/QldCn0JDQotCsPC90ZXh0Pjwvc3ZnPg==" alt="Печать" data-editable="certificate_stamp">
+        </div>
+    </div>
+</body>
+</html>

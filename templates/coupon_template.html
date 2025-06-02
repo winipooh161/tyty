@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шаблон одноразового купона</title>
+    <style>
+        /* Основные стили купона */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .coupon-container {
+            width: 100%;
+            max-width: 380px;
+            min-height: 200px;
+            margin: 20px;
+            background: #fff;
+            position: relative;
+            color: #333;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Перфорированная граница купона */
+        .coupon-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .coupon-border::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 10px;
+            right: 10px;
+            height: 10px;
+            background-image: linear-gradient(90deg, #fff 0px, #fff 8px, transparent 8px, transparent 16px);
+            background-size: 16px 10px;
+        }
+        
+        .coupon-border::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            right: 10px;
+            height: 10px;
+            background-image: linear-gradient(90deg, #fff 0px, #fff 8px, transparent 8px, transparent 16px);
+            background-size: 16px 10px;
+        }
+        
+        /* Основной контент купона */
+        .coupon-content {
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 50px 50px, #f6f6f6 10px, transparent 10px),
+                radial-gradient(circle at 150px 150px, #f6f6f6 8px, transparent 8px),
+                radial-gradient(circle at 250px 80px, #f6f6f6 12px, transparent 12px);
+        }
+        
+        /* Верхняя часть купона */
+        .coupon-header {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .coupon-logo {
+            margin: 0 auto 10px;
+            display: block;
+            max-width: 80px;
+            max-height: 80px;
+        }
+        
+        .coupon-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #e63946;
+            margin: 0 0 5px;
+            letter-spacing: 1px;
+        }
+        
+        .coupon-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            margin: 0 0 15px;
+        }
+        
+        /* Основная часть купона */
+        .coupon-body {
+            padding: 15px;
+            width: 90%;
+            margin: 0 auto 15px;
+            border-top: 1px dashed #ccc;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .coupon-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #e63946;
+            margin: 10px 0;
+            line-height: 1;
+        }
+        
+        .coupon-description {
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 10px 0;
+            color: #444;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        /* Нижняя часть купона */
+        .coupon-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .coupon-details {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+        
+        .coupon-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .coupon-code-container {
+            margin-top: 10px;
+            width: 90%;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .coupon-code-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .coupon-code {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            letter-spacing: 2px;
+            padding: 5px;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 4px;
+        }
+        
+        .coupon-terms {
+            font-size: 11px;
+            color: #999;
+            margin-top: 15px;
+            width: 90%;
+            line-height: 1.3;
+        }
+        
+        /* Ножницы для купона */
+        .scissors {
+            position: absolute;
+            font-size: 20px;
+            color: #aaa;
+            top: -5px;
+            right: 15px;
+            transform: rotate(90deg);
+        }
+        
+        /* Эффект при наведении */
+        .coupon-container:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Стили для QR-кода купона */
+        .coupon-qr {
+            width: 80px;
+            height: 80px;
+            margin: 5px auto;
+        }
+        
+        /* Адаптивная верстка */
+        @media screen and (max-width: 400px) {
+            .coupon-container {
+                margin: 10px;
+            }
+            
+            .coupon-title {
+                font-size: 20px;
+            }
+            
+            .coupon-value {
+                font-size: 36px;
+            }
+            
+            .coupon-code {
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
+        }
+        
+        /* Стили для печати */
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .coupon-container {
+                box-shadow: none;
+                margin: 0;
+                page-break-inside: avoid;
+                max-width: none;
+            }
+            
+            .scissors {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coupon-container">
+        <div class="scissors">✂</div>
+        <div class="coupon-border"></div>
+        
+        <div class="coupon-content">
+            <!-- Верхняя часть купона с логотипом и заголовками -->
+            <div class="coupon-header">
+                <img class="coupon-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U2Mzk0NiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+TE9HTzwvdGV4dD48L3N2Zz4=" alt="Логотип" data-editable="company_logo">
+                
+                <h1 class="coupon-title" data-editable="coupon_title">СКИДКА</h1>
+                <div class="coupon-subtitle" data-editable="coupon_subtitle">Одноразовый купон</div>
+            </div>
+            
+            <!-- Основная часть купона со значением скидки -->
+            <div class="coupon-body">
+                <div class="coupon-value" data-editable="coupon_value">30%</div>
+                
+                <div class="coupon-description" data-editable="coupon_description">
+                    на все товары и услуги из нашего каталога. Купон действует на один заказ.
+                </div>
+                
+                <img class="coupon-qr" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzAwMCIvPjxyZWN0IHg9IjYwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDAwIi8+PHJlY3QgeD0iMjAiIHk9IjYwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAiLz48cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzAwMCIvPjxyZWN0IHg9IjYwIiB5PSI2MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDAwIi8+PC9zdmc+" alt="QR-код купона" data-editable="coupon_qr">
+            </div>
+            
+            <!-- Нижняя часть с датами и кодом -->
+            <div class="coupon-footer">
+                <div class="coupon-details">
+                    <div class="coupon-detail">
+                        <div class="detail-label" data-editable="valid_from_label">Действует с</div>
+                        <div class="detail-value" data-editable="valid_from_date">01.05.2023</div>
+                    </div>
+                    
+                    <div class="coupon-detail">
+                        <div class="detail-label" data-editable="valid_to_label">Действует до</div>
+                        <div class="detail-value" data-editable="valid_to_date">31.05.2023</div>
+                    </div>
+                </div>
+                
+                <div class="coupon-code-container">
+                    <div class="coupon-code-label" data-editable="code_label">Код купона</div>
+                    <div class="coupon-code" data-editable="coupon_code">SALE30</div>
+                </div>
+                
+                <div class="coupon-terms" data-editable="coupon_terms">
+                    * Купон действует только один раз. Нельзя использовать вместе с другими промокодами.
+                    Для применения скидки предъявите данный купон при оформлении заказа. Организатор вправе изменить условия акции.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
