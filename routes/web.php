@@ -109,6 +109,11 @@ Route::prefix('client')->middleware('role:client,admin')->group(function () {
     Route::post('/acquired-templates/{id}/move', [App\Http\Controllers\AcquiredTemplateController::class, 'moveToFolder'])->name('acquired.templates.move');
 });
 
+// Маршрут для обновления CSRF-токена
+Route::get('/refresh-csrf', function () {
+    return response()->json(['token' => csrf_token()]);
+})->name('refresh-csrf');
+
 // Маршруты для обычных пользователей
 Route::prefix('user')->middleware('role:user')->group(function () {
     Route::get('/', function () {

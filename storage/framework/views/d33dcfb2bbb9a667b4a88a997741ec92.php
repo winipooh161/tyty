@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title><?php echo e(config('app.name', 'Laravel')); ?></title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -19,27 +19,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Локальные стили вместо использования Vite -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-      @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
+      <!-- Vite ресурсы отключены, используйте прямые ссылки на файлы -->
     <!-- Дополнительные стили и скрипты -->
-    @yield('styles')
+    <?php echo $__env->yieldContent('styles'); ?>
 </head>
 <body>
     <div id="app" class="d-flex">
-        @auth
+        <?php if(auth()->guard()->check()): ?>
             <!-- Подключение боковой панели навигации для ПК (скрываем на странице редактора) -->
-            @if(!request()->routeIs('client.templates.editor'))
-                @include('layouts.partials.sidebar')
-            @endif
+            <?php if(!request()->routeIs('client.templates.editor')): ?>
+                <?php echo $__env->make('layouts.partials.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php endif; ?>
             
             <!-- Подключение мобильной навигации (скрываем на странице редактора) -->
-            @if(!request()->routeIs('client.templates.editor'))
-                @include('layouts.partials.mobile-nav')
-            @endif
-        @endauth
+            <?php if(!request()->routeIs('client.templates.editor')): ?>
+                <?php echo $__env->make('layouts.partials.mobile-nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php endif; ?>
+        <?php endif; ?>
         
-        <main class="py-4 flex-grow-1 content-wrapper {{ request()->routeIs('client.templates.editor') ? 'p-0' : '' }}">
-            @yield('content')
+        <main class="py-4 flex-grow-1 content-wrapper <?php echo e(request()->routeIs('client.templates.editor') ? 'p-0' : ''); ?>">
+            <?php echo $__env->yieldContent('content'); ?>
         </main>
     </div>
     
@@ -51,7 +51,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Функция для обновления CSRF токена
         function refreshCsrfToken() {
-            return axios.get('{{ route('refresh-csrf') }}')
+            return axios.get('<?php echo e(route('refresh-csrf')); ?>')
                 .then(function(response) {
                     if (response.data && response.data.token) {
                         // Обновляем токен в мета-теге
@@ -178,7 +178,8 @@
     </script>
     
     <!-- Дополнительные скрипты внизу страницы -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    @yield('scripts')
+    <script src="<?php echo e(asset('js/app.js')); ?>"></script>
+    <?php echo $__env->yieldContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\OSPanel\domains\tyty\resources\views/layouts/app.blade.php ENDPATH**/ ?>
